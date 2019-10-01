@@ -1,11 +1,15 @@
 -module(ppool).
 
--export([async_queue/2, run/2, start_link/0,
-	 start_pool/3, stop/0, stop_pool/1, sync_queue/2]).
+-behaviour(application).
 
-start_link() -> ppool_supersup:start_link().
+-export([start/2, stop/1]).
 
-stop() -> ppool_supersup:stop().
+-export([async_queue/2, run/2, start_pool/3,
+	 stop_pool/1, sync_queue/2]).
+
+start(normal, _Args) -> ppool_supersup:start_link().
+
+stop(_State) -> ok.
 
 start_pool(Name, Limit, {M, F, A}) ->
     ppool_supersup:start_pool(Name, Limit, {M, F, A}).
